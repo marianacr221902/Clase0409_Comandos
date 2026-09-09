@@ -36,7 +36,7 @@
       const trackedControls = cursorEl.components['tracked-controls']; // solo existe en los controles reales
       const gamepad = trackedControls && trackedControls.controller;   // el objeto Gamepad del navegador
       if (gamepad && gamepad.hapticActuators && gamepad.hapticActuators[0]) {
-        gamepad.hapticActuators[0].pulse(0.7, 100); // (fuerza 0 a 1, duración en ms)
+        gamepad.hapticActuators[0].pulse(1, 100); // (fuerza 0 a 1, duración en ms)
       }
     }
 
@@ -147,7 +147,7 @@
     AFRAME.registerComponent('gestor-juego', {
       init: function () {
         this.puntos = 0;
-        this.segundosRestantes = 30;
+        this.segundosRestantes = 100;
         this.jugando = true;
 
         // Guardamos referencias a los textos del HUD para no buscarlos cada vez
@@ -165,27 +165,27 @@
         // *** NUEVO *** BOTONES DEL MANDO (Quest, control DERECHO)
         // Un botón "manda un evento" al apretarlo. Lo escuchamos igual que
         // escuchamos "punto-anotado". Botón A = reiniciar, Botón B = revolver.
-        this.el.sceneEl.addEventListener('abuttondown', () => this.reiniciar());
-        this.el.sceneEl.addEventListener('bbuttondown', () => this.revolver());
+        this.el.sceneEl.addEventListener('thumbstickdown', () => this.reiniciar());
+        this.el.sceneEl.addEventListener('ybuttondown', () => => this.revolver());
 
-        // Para PROBAR en la computadora (sin mando): tecla R = reiniciar, E = revolver
+        // Para PROBAR en la computadora (sin mando): tecla A = reiniciar, D = revolver
         window.addEventListener('keydown', (evento) => {
-          if (evento.key === 'r' || evento.key === 'R') this.reiniciar();
-          if (evento.key === 'e' || evento.key === 'E') this.revolver();
+          if (evento.key === 'a' || evento.key === 'A') this.reiniciar();
+          if (evento.key === 'd' || evento.key === 'D') this.revolver();
         });
 
         this.iniciarCronometro();
       },
 
       iniciarCronometro: function () {
-        // setInterval ejecuta esta función cada 1000 ms (1 segundo) hasta que la paremos
+        // setInterval ejecuta esta función cada 2000 ms (2 segundo) hasta que la paremos
         this.temporizador = setInterval(() => {
           this.segundosRestantes--;
           this.hudTiempo.setAttribute('value', `Tiempo: ${this.segundosRestantes}`);
           if (this.segundosRestantes <= 0) {
             this.terminarJuego();
           }
-        }, 1000);
+        }, 2000);
       },
 
       sumarPunto: function () {
@@ -216,10 +216,10 @@
         // por si reinician a media partida (evita que corran dos a la vez).
         clearInterval(this.temporizador);
         this.puntos = 0;
-        this.segundosRestantes = 30;
+        this.segundosRestantes = 100;
         this.jugando = true;
         this.hudPuntos.setAttribute('value', 'Puntos: 0');
-        this.hudTiempo.setAttribute('value', 'Tiempo: 30');
+        this.hudTiempo.setAttribute('value', 'Tiempo: 100');
         this.hudFinal.setAttribute('visible', false);
         this.botonReiniciar.setAttribute('visible', false);
         // Movemos el objetivo a un punto nuevo para empezar limpio
