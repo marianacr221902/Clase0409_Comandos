@@ -166,7 +166,7 @@
         // Un botón "manda un evento" al apretarlo. Lo escuchamos igual que
         // escuchamos "punto-anotado". Botón A = reiniciar, Botón B = revolver.
         this.el.sceneEl.addEventListener('thumbstickdown', () => this.reiniciar());
-        this.el.sceneEl.addEventListener('ybuttondown', () => => this.revolver());
+        this.el.sceneEl.addEventListener('ybuttondown', () => this.revolver());
 
         // Para PROBAR en la computadora (sin mando): tecla A = reiniciar, D = revolver
         window.addEventListener('keydown', (evento) => {
